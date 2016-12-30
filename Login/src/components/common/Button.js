@@ -23,17 +23,19 @@ const styles = {
         paddingBottom: 10
     },
     buttonStyle: {
-        flex: 1,
-        //justifyContent: 'center',
-        //alignItems: 'center',
+        height: 40,
+        width: 100,
+        // flex: 1,
+        // flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
         //alignSelf: 'stretch',
-        //alignSelf: 'center',
+        alignSelf: 'center',
         borderRadius: 5,
         borderWidth: 1,
         backgroundColor: '#007aff',
         borderColor: '#007aff',
-        marginLeft: 110,
-        marginRight: 110
+        marginBottom: 12
     }
 };
 

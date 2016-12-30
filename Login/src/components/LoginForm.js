@@ -89,9 +89,7 @@ class LoginForm extends Component {
                     {this.state.error}
                 </Text>
 
-                <CardSection>
                     {this.renderButton()}
-                </CardSection>
             </Card>
         );
     }
