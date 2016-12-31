@@ -4,46 +4,58 @@ import Firebase from 'firebase';
 
 import { Header, Button, Card, CardSection, Input, Spinner } from './common';
 
-class LoginForm extends Component {
+class RegisterForm extends Component {
     // state = { email: '' };
     constructor(props) {
         super(props);
         this.state = {
             email: '',
             password: '',
+            passwordConfirmation: '',
             errorMessage: '',
+            successMessage: '',
             loading: false
         };
     }
 
-    onLoginButtonPress() {
-        const { email, password } = this.state;
+    onRegisterButtonPress() {
+        const { email, password, passwordConfirmation } = this.state;
 
         this.setState({
             errorMessage: '',
             loading: true
         });
 
-        Firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(this.onLoginSuccess.bind(this))
-            .catch(this.onLoginFail.bind(this));
+        if (password === passwordConfirmation) {
+            Firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then(this.onRegisterSuccess.bind(this))
+                .catch((error) => this.onRegisterFail(error)/*this.onRegisterFail.bind(this)*/)
+        } else {
+            this.setState({
+                errorMessage: "Password's don't match",
+                loading: false
+            });
+        }
     }
 
-    onLoginFail() {
+    onRegisterFail(error) {
+        console.log(error);
         this.setState({
-            errorMessage: 'Login failed',
+            errorMessage: error.message,
+            //errorMessage: 'Registration failed',
             loading: false
         });
     }
 
-    onLoginSuccess() {
+    onRegisterSuccess() {
         this.setState({
             email: '',
             password: '',
+            passwordConfirmation: '',
             loading: false,
-            errorMessage: ''
+            errorMessage: '',
+            successMessage: 'You have successfully registered'
         });
-        this.props.navigator.immediatelyResetRouteStack([{name: 'home'}]);
     }
 
     renderError() {
@@ -51,6 +63,16 @@ class LoginForm extends Component {
             return (
                 <Text style={styles.errorMessageStyle}>
                     {this.state.errorMessage}
+                </Text>
+            );
+        }
+    }
+
+    renderSuccess() {
+        if (this.state.successMessage !== '') {
+            return (
+                <Text style={styles.successMessageStyle}>
+                    {this.state.successMessage}
                 </Text>
             );
         }
@@ -64,19 +86,19 @@ class LoginForm extends Component {
         return (
             <Button
                 title='Login'
-                onPress={this.onLoginButtonPress.bind(this)}
+                onPress={this.onRegisterButtonPress.bind(this)}
             >
-                Login
+                Register
             </Button>
         );
     }
 
-    onRegisterPress() {
-        this.props.navigator.push({name: 'signup'});
+    onGoBackPress() {
+        this.props.navigator.pop();
     }
 
     render() {
-        //const { errorMessageStyle, registerTextStyle } = styles;
+        //const { errorMessageStyle, goBackTextStyle} = styles;
 
         return (
             <View>
@@ -99,21 +121,31 @@ class LoginForm extends Component {
                             onChangeText={password => this.setState({ password })}
                         />
                     </CardSection>
+                    <CardSection additionalStyles={{paddingTop: 10, paddingBottom: 10}}>
+                        <Input
+                            secureTextEntry
+                            label='Confirm Password'
+                            placeholder='password'
+                            value={this.state.passwordConfirmation}
+                            onChangeText={passwordConfirmation => this.setState({ passwordConfirmation })}
+                        />
+                    </CardSection>
                 </Card>
                 <View>
 
                     {this.renderError()}
 
+                    {this.renderSuccess()}
+
                     {this.renderButton()}
 
-                    <Text style={styles.registerTextStyle}>
-                        Don't have an account?
+                    <Text style={styles.goBackTextStyle}>
+                        I have an account.
                         <Text style={{color: 'blue'}}
-                              onPress={this.onRegisterPress.bind(this)}>
-                            {' '}Register
+                              onPress={this.onGoBackPress.bind(this)}>
+                            {' '}Go Back
                         </Text>
                     </Text>
-
                 </View>
             </View>
         );
@@ -125,15 +157,24 @@ const styles = {
         marginTop: 10,
         marginBottom: -8,
         fontSize: 18,
-        textAlign: 'center',
         color: 'red',
+        textAlign: 'center',
         marginLeft: 5,
         marginRight: 5
     },
-    registerTextStyle: {
+    successMessageStyle: {
+        marginTop: 10,
+        marginBottom: -8,
+        fontSize: 18,
+        color: 'green',
+        textAlign: 'center',
+        marginLeft: 5,
+        marginRight: 5
+    },
+    goBackTextStyle: {
         fontSize: 18,
         textAlign: 'center'
     }
 };
 
-export default LoginForm;
+export default RegisterForm;

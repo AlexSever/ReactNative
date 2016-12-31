@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { Navigator, View } from 'react-native';
 import Firebase from 'firebase';
 
-import { Header, Button, Spinner } from './components/common';
-import LoginForm from './components/LoginForm'
+import LoginForm from './components/LoginForm';
+import RegisterForm from './components/RegisterForm';
+import Home from './components/userArea/Home';
+
+const ROUTES = {
+    login: LoginForm,
+    signup: RegisterForm,
+    home: Home
+};
 
 export default class App extends Component {
     constructor(props) {
@@ -31,32 +38,57 @@ export default class App extends Component {
         });
     }
 
-    renderContent() {
+    renderScene(route, navigator) {
+        const Component = ROUTES[route.name]; // ROUTES['login'] => LoginForm
 
-        switch (this.state.loggedIn) {
-            case true:
-                return (
-                    <Button
-                        title='Logout'
-                        onPress={() => Firebase.auth().signOut()}
-                    >
-                        Logout
-                    </Button>
-                );
-            case false:
-                return <LoginForm/>;
-            default:
-                return <Spinner size='large' />
-        }
+        // navigator.immediatelyResetRouteStack([{name: 'home'}])
+
+        return <Component route={route} navigator={navigator}/>;
     }
-
 
     render() {
         return (
-            <View>
-                <Header headerText="Authentication" />
-                {this.renderContent()}
-            </View>
+            <Navigator
+                style={styles.container}
+                initialRoute={{name: 'login'}}
+                renderScene={this.renderScene}
+                configureScene={() => Navigator.SceneConfigs.FloatFromRight}
+            />
         );
     }
+
+    // renderContent() {
+    //
+    //     switch (this.state.loggedIn) {
+    //         case true:
+    //             return (
+    //                 <Button
+    //                     title='Logout'
+    //                     onPress={() => Firebase.auth().signOut()}
+    //                 >
+    //                     Logout
+    //                 </Button>
+    //             );
+    //         case false:
+    //             return <LoginForm/>;
+    //         default:
+    //             return <Spinner size='large' />
+    //     }
+    // }
+    //
+    //
+    // render() {
+    //     return (
+    //         <View>
+    //             <Header headerText="Authentication" />
+    //             {this.renderContent()}
+    //         </View>
+    //     );
+    // }
 }
+
+const styles = {
+    container: {
+        flex: 1
+    }
+};

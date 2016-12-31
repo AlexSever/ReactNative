@@ -35,7 +35,8 @@ const styles = {
         borderWidth: 1,
         backgroundColor: '#007aff',
         borderColor: '#007aff',
-        marginBottom: 12
+        marginTop: 20,
+        marginBottom: 10
     }
 };
 
