@@ -58,7 +58,11 @@ class LoginForm extends Component {
 
     renderButton() {
         if (this.state.loading) {
-            return <Spinner size='small'/>;
+            return (
+                <View style={{height: 62}}>
+                    <Spinner size='small'/>
+                </View>
+            );
         }
 
         return (

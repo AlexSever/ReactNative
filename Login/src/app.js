@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Navigator, View } from 'react-native';
 import Firebase from 'firebase';
 
+import { Spinner } from './components/common';
+
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import Home from './components/userArea/Home';
@@ -16,7 +18,8 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loggedIn: null
+            loggedIn: null,
+            initialRoute: true
         };
     }
 
@@ -39,18 +42,31 @@ export default class App extends Component {
     }
 
     renderScene(route, navigator) {
-        const Component = ROUTES[route.name]; // ROUTES['login'] => LoginForm
 
-        // navigator.immediatelyResetRouteStack([{name: 'home'}])
+        const Component = ROUTES[route.name]; // ROUTES['login'] => LoginForm
 
         return <Component route={route} navigator={navigator}/>;
     }
 
+    renderInitialRoute() {
+        switch (this.state.loggedIn) {
+            case true:
+                return {name: 'home'};
+            case false:
+                return {name: 'login'};
+        }
+    }
+
     render() {
+        if (this.state.loggedIn === null) {
+            return <Spinner size='large' />
+        }
+
         return (
             <Navigator
                 style={styles.container}
-                initialRoute={{name: 'login'}}
+                initialRoute={this.renderInitialRoute()}
+                //renderScene={(route, navigator) => this.renderScene(route, navigator, firstLoad, loggedIn)}
                 renderScene={this.renderScene}
                 configureScene={() => Navigator.SceneConfigs.FloatFromRight}
             />
