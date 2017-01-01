@@ -77,6 +77,11 @@ class LoginForm extends Component {
     }
 
     onRegisterPress() {
+        this.setState({
+            email: '',
+            password: '',
+            errorMessage: ''
+        });
         this.props.navigator.push({name: 'signup'});
     }
 

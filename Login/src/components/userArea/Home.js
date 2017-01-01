@@ -6,15 +6,35 @@ import { Button } from '../common';
 
 class Home extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            displayName: '',
+            email: ''
+        };
+    }
+
     onLogoutButtonPress() {
         Firebase.auth().signOut();
         this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
     }
 
+    componentWillMount() {
+        const user = Firebase.auth().currentUser;
+        //const { displayName, email } = user;
+        const displayName = user.displayName || 'User';
+        const email = user.email;
+
+        this.setState({
+            displayName: displayName,
+            email: email
+        });
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <Text>Welcome Home!</Text>
+                <Text>Welcome Home {this.state.displayName}!</Text>
                 <Button
                     title='Logout'
                     onPress={this.onLogoutButtonPress.bind(this)}

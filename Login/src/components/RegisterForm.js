@@ -9,6 +9,7 @@ class RegisterForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            displayName: '',
             email: '',
             password: '',
             passwordConfirmation: '',
@@ -19,7 +20,8 @@ class RegisterForm extends Component {
     }
 
     onRegisterButtonPress() {
-        const { email, password, passwordConfirmation } = this.state;
+        //displayName
+        const { email, password, passwordConfirmation, displayName } = this.state;
 
         this.setState({
             errorMessage: '',
@@ -28,7 +30,7 @@ class RegisterForm extends Component {
 
         if (password === passwordConfirmation) {
             Firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then(this.onRegisterSuccess.bind(this))
+                .then(() => this.onRegisterSuccess(displayName)/*this.onRegisterSuccess.bind(this)*/)
                 .catch((error) => this.onRegisterFail(error)/*this.onRegisterFail.bind(this)*/)
         } else {
             this.setState({
@@ -46,9 +48,22 @@ class RegisterForm extends Component {
             loading: false
         });
     }
+    // =================================
+    // --- Adding NAME to user's profile
+    // =================================
+    onRegisterSuccess(displayName) {
+        const user = Firebase.auth().currentUser;
 
-    onRegisterSuccess() {
+        user.updateProfile({
+            displayName: displayName
+        })
+            .then(this.onUpdateProfileSuccess.bind(this))
+            .catch((error) => this.setState({ errorMessage: error.message }));
+    }
+
+    onUpdateProfileSuccess() {
         this.setState({
+            displayName: '',
             email: '',
             password: '',
             passwordConfirmation: '',
@@ -104,6 +119,14 @@ class RegisterForm extends Component {
             <View>
                 <Header headerText="Authentication" />
                 <Card>
+                    <CardSection>
+                        <Input
+                            label='Name'
+                            placeholder='username'
+                            value={this.state.displayName}
+                            onChangeText={displayName => this.setState({ displayName })}
+                        />
+                    </CardSection>
                     <CardSection>
                         <Input
                             label='Email'
