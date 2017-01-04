@@ -7,11 +7,15 @@ import { Spinner } from './components/common';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import Home from './components/userArea/Home';
+import RightPage from './components/userArea/RightPage';
+import LeftPage from './components/userArea/LeftPage';
 
 const ROUTES = {
     login: LoginForm,
     signup: RegisterForm,
-    home: Home
+    home: Home,
+    rightPage: RightPage,
+    leftPage: LeftPage
 };
 
 export default class App extends Component {
@@ -41,13 +45,6 @@ export default class App extends Component {
         });
     }
 
-    renderScene(route, navigator) {
-
-        const Component = ROUTES[route.name]; // ROUTES['login'] => LoginForm
-
-        return <Component route={route} navigator={navigator}/>;
-    }
-
     renderInitialRoute() {
         switch (this.state.loggedIn) {
             case true:
@@ -55,6 +52,20 @@ export default class App extends Component {
             case false:
                 return {name: 'login'};
         }
+    }
+
+    renderScene(route, navigator) {
+
+        const Component = ROUTES[route.name]; // ROUTES['login'] => LoginForm
+
+        return <Component route={route} navigator={navigator}/>;
+    }
+
+    configureScene(route) {
+        if (route.sceneConfig) {
+            return route.sceneConfig;
+        }
+        return Navigator.SceneConfigs.FloatFromRight;
     }
 
     render() {
@@ -68,7 +79,8 @@ export default class App extends Component {
                 initialRoute={this.renderInitialRoute()}
                 //renderScene={(route, navigator) => this.renderScene(route, navigator, firstLoad, loggedIn)}
                 renderScene={this.renderScene}
-                configureScene={() => Navigator.SceneConfigs.FloatFromRight}
+                //configureScene={() => Navigator.SceneConfigs.FloatFromRight}
+                configureScene={this.configureScene}
             />
         );
     }

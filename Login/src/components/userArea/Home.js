@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Navigator } from 'react-native';
 import Firebase from 'firebase';
 
 import { Button } from '../common';
@@ -19,6 +19,17 @@ class Home extends Component {
         this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
     }
 
+    onGoRightPress() {
+        this.props.navigator.push({name: 'rightPage'});
+    }
+
+    onGoLeftPress() {
+        this.props.navigator.push({
+            name: 'leftPage',
+            sceneConfig: Navigator.SceneConfigs.FloatFromLeft
+        });
+    }
+
     componentWillMount() {
         const user = Firebase.auth().currentUser;
         //const { displayName, email } = user;
@@ -34,12 +45,24 @@ class Home extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Welcome Home {this.state.displayName}!</Text>
+                <Text style={{ fontSize: 20}}>Welcome Home {this.state.displayName}!</Text>
                 <Button
                     title='Logout'
                     onPress={this.onLogoutButtonPress.bind(this)}
                 >
                 Logout
+                </Button>
+                <Button
+                    title='Go Right'
+                    onPress={this.onGoRightPress.bind(this)}
+                >
+                    Go Right
+                </Button>
+                <Button
+                    title='Go Left'
+                    onPress={this.onGoLeftPress.bind(this)}
+                >
+                    Go Left
                 </Button>
             </View>
         );
