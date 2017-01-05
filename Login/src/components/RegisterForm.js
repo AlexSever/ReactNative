@@ -114,10 +114,9 @@ class RegisterForm extends Component {
 
     render() {
         //const { errorMessageStyle, goBackTextStyle} = styles;
-
+        //<Header headerText="Authentication" />
         return (
             <View>
-                <Header headerText="Authentication" />
                 <Card>
                     <CardSection>
                         <Input

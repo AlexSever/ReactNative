@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
-import { Navigator, View } from 'react-native';
+import { Navigator, View, Text, TouchableHighlight } from 'react-native';
 import Firebase from 'firebase';
 
-import { Spinner } from './components/common';
+import { NavBar, Spinner } from './components/common';
 
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import Home from './components/userArea/Home';
 import RightPage from './components/userArea/RightPage';
 import LeftPage from './components/userArea/LeftPage';
+//import NavigationBar from './components/common/NavigationBar';
 
 const ROUTES = {
-    login: LoginForm,
-    signup: RegisterForm,
-    home: Home,
+    Login: LoginForm,
+    Register: RegisterForm,
+    Home: Home,
     rightPage: RightPage,
     leftPage: LeftPage
 };
@@ -48,15 +49,15 @@ export default class App extends Component {
     renderInitialRoute() {
         switch (this.state.loggedIn) {
             case true:
-                return {name: 'home'};
+                return {name: 'Home'};
             case false:
-                return {name: 'login'};
+                return {name: 'Login'};
         }
     }
 
     renderScene(route, navigator) {
 
-        const Component = ROUTES[route.name]; // ROUTES['login'] => LoginForm
+        const Component = ROUTES[route.name]; // ROUTES['Login'] => LoginForm
 
         return <Component route={route} navigator={navigator}/>;
     }
@@ -70,53 +71,19 @@ export default class App extends Component {
 
     render() {
         if (this.state.loggedIn === null) {
-            return <Spinner size='large' />
+            return <Spinner size='large' /> ;
         }
 
         return (
             <Navigator
-                style={styles.container}
+                sceneStyle={{marginTop:60}}
                 initialRoute={this.renderInitialRoute()}
                 //renderScene={(route, navigator) => this.renderScene(route, navigator, firstLoad, loggedIn)}
                 renderScene={this.renderScene}
                 //configureScene={() => Navigator.SceneConfigs.FloatFromRight}
                 configureScene={this.configureScene}
+                navigationBar={NavBar}
             />
         );
     }
-
-    // renderContent() {
-    //
-    //     switch (this.state.loggedIn) {
-    //         case true:
-    //             return (
-    //                 <Button
-    //                     title='Logout'
-    //                     onPress={() => Firebase.auth().signOut()}
-    //                 >
-    //                     Logout
-    //                 </Button>
-    //             );
-    //         case false:
-    //             return <LoginForm/>;
-    //         default:
-    //             return <Spinner size='large' />
-    //     }
-    // }
-    //
-    //
-    // render() {
-    //     return (
-    //         <View>
-    //             <Header headerText="Authentication" />
-    //             {this.renderContent()}
-    //         </View>
-    //     );
-    // }
 }
-
-const styles = {
-    container: {
-        flex: 1
-    }
-};

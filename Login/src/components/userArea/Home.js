@@ -16,7 +16,7 @@ class Home extends Component {
 
     onLogoutButtonPress() {
         Firebase.auth().signOut();
-        this.props.navigator.immediatelyResetRouteStack([{name: 'login'}]);
+        this.props.navigator.immediatelyResetRouteStack([{name: 'Login'}]);
     }
 
     onGoRightPress() {

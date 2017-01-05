@@ -44,7 +44,7 @@ class LoginForm extends Component {
             loading: false,
             errorMessage: ''
         });
-        this.props.navigator.immediatelyResetRouteStack([{name: 'home'}]);
+        this.props.navigator.immediatelyResetRouteStack([{name: 'Home'}]);
     }
 
     renderError() {
@@ -82,15 +82,14 @@ class LoginForm extends Component {
             password: '',
             errorMessage: ''
         });
-        this.props.navigator.push({name: 'signup'});
+        this.props.navigator.push({name: 'Register'});
     }
 
     render() {
         //const { errorMessageStyle, registerTextStyle } = styles;
-
+        //<Header headerText="Authentication" />
         return (
             <View>
-                <Header headerText="Authentication" />
                 <Card>
                     <CardSection>
                         <Input
