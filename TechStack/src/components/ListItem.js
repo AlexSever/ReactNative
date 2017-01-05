@@ -32,7 +32,6 @@ class ListItem extends Component {
     render() {
         const { titleStyle } = styles;
         const { id, title } = this.props.library;
-        console.log(this.props);
 
         return (
             <TouchableWithoutFeedback

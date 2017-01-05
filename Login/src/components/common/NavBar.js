@@ -19,12 +19,12 @@ const styles = {
         shadowRadius: 1.5
     },
     titleStyle: {
-        paddingTop: 2,
+        paddingTop: 5,
         fontSize: 17,
         fontWeight: 'bold'
     },
     leftButtonStyle: {
-        paddingTop: 2,
+        paddingTop: 5,
         paddingLeft: 10,
         fontSize: 17,
         color: '#007aff',
@@ -53,7 +53,8 @@ const NavBarRouteMapper = {
 const NavBar = (
     <Navigator.NavigationBar
         style={styles.navBar}
-        routeMapper={NavBarRouteMapper} />
+        routeMapper={NavBarRouteMapper}
+    />
 );
 
 export { NavBar };

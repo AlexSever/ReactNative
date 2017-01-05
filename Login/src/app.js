@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navigator, View, Text, TouchableHighlight } from 'react-native';
+import { Navigator, View } from 'react-native';
 import Firebase from 'firebase';
 
 import { NavBar, Spinner } from './components/common';
@@ -9,7 +9,6 @@ import RegisterForm from './components/RegisterForm';
 import Home from './components/userArea/Home';
 import RightPage from './components/userArea/RightPage';
 import LeftPage from './components/userArea/LeftPage';
-//import NavigationBar from './components/common/NavigationBar';
 
 const ROUTES = {
     Login: LoginForm,
@@ -78,9 +77,7 @@ export default class App extends Component {
             <Navigator
                 sceneStyle={{marginTop:60}}
                 initialRoute={this.renderInitialRoute()}
-                //renderScene={(route, navigator) => this.renderScene(route, navigator, firstLoad, loggedIn)}
                 renderScene={this.renderScene}
-                //configureScene={() => Navigator.SceneConfigs.FloatFromRight}
                 configureScene={this.configureScene}
                 navigationBar={NavBar}
             />
