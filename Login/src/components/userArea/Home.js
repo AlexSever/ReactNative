@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, Navigator } from 'react-native';
+import { View, Text, Navigator, Menu } from 'react-native';
+import SideMenu from 'react-native-side-menu';
 import Firebase from 'firebase';
 
 import { Button } from '../common';
+
+import LeftNav from '../navigation/LeftNav';
+
+import motionController from '../../gesture/motionController'
 
 class Home extends Component {
 
@@ -12,6 +17,7 @@ class Home extends Component {
             displayName: '',
             email: ''
         };
+        this.motionController = new motionController();
     }
 
     onLogoutButtonPress() {
@@ -20,12 +26,12 @@ class Home extends Component {
     }
 
     onGoRightPress() {
-        this.props.navigator.push({name: 'rightPage'});
+        this.props.navigator.push({name: 'RightPage1'});
     }
 
     onGoLeftPress() {
         this.props.navigator.push({
-            name: 'leftPage',
+            name: 'LeftPage',
             sceneConfig: Navigator.SceneConfigs.FloatFromLeft
         });
     }
@@ -42,29 +48,62 @@ class Home extends Component {
         });
     }
 
+    // ========================
+    // --- motionController ---
+    // ========================
+
+    onResponderGrant(evt) {
+        this.motionController.startMove(evt.nativeEvent);
+    }
+
+    onResponderMove(evt) {
+        this.motionController.holdMove(evt.nativeEvent);
+    }
+
+    onResponderRelease(evt) {
+        if (this.motionController.endMove(evt.nativeEvent) === 'left') {
+            this.props.navigator.push({name: 'RightPage1'});
+        }
+    }
+
+    // ========================
+
     render() {
+        const Menu = <LeftNav navigator={this.props.navigator}/>;
+
         return (
-            <View style={styles.container}>
-                <Text style={{ fontSize: 20}}>Welcome Home {this.state.displayName}!</Text>
-                <Button
-                    title='Logout'
-                    onPress={this.onLogoutButtonPress.bind(this)}
+            <SideMenu menu={Menu} >
+                <View
+                    style={styles.container}
+                    onStartShouldSetResponder={evt => true}
+                    onMoveShouldSetResponder={evt => true}
+                    onResponderGrant={this.onResponderGrant.bind(this)}
+                    onResponderMove={this.onResponderMove.bind(this)}
+                    onResponderRelease={this.onResponderRelease.bind(this)}
                 >
-                Logout
-                </Button>
-                <Button
-                    title='Go Right'
-                    onPress={this.onGoRightPress.bind(this)}
-                >
-                    Go Right
-                </Button>
-                <Button
-                    title='Go Left'
-                    onPress={this.onGoLeftPress.bind(this)}
-                >
-                    Go Left
-                </Button>
-            </View>
+                    <Text style={{ fontSize: 20}}>Welcome Home {this.state.displayName}!</Text>
+                    <Text>Grab the left side of the screen to see Left Menu</Text>
+                    <Text>Slide from Right to Left to go to the next page</Text>
+                    <Button
+                        title='Logout'
+                        onPress={this.onLogoutButtonPress.bind(this)}
+                    >
+                    Logout
+                    </Button>
+                    <Button
+                        title='Go Right'
+                        onPress={this.onGoRightPress.bind(this)}
+                    >
+                        Go Right
+                    </Button>
+                    <Button
+                        title='Go Left'
+                        onPress={this.onGoLeftPress.bind(this)}
+                    >
+                        Go Left
+                    </Button>
+                </View>
+            </SideMenu>
         );
     }
 }

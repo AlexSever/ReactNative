@@ -16,7 +16,8 @@ const styles = {
         //position: 'relative',
         flexDirection: 'row',
         paddingHorizontal: 15,
-        shadowRadius: 1.5
+        shadowRadius: 1.5,
+        //opacity: 0
     },
     titleStyle: {
         paddingTop: 5,
@@ -57,4 +58,4 @@ const NavBar = (
     />
 );
 
-export { NavBar };
+export default NavBar;

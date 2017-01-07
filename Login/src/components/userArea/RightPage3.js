@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import Firebase from 'firebase';
 
 import { Button } from '../common';
 
-class RightPage extends Component {
+class RightPage2 extends Component {
+    constructor(props) {
+        super(props);
+    }
 
     onGoBackPress() {
         this.props.navigator.pop();
@@ -13,10 +15,12 @@ class RightPage extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={{ fontSize: 20}}>It's just a Right Page</Text>
+                <Text style={{ fontSize: 20}}>It's a Right Page 3</Text>
+                <Text>Last page for Now!!!</Text>
                 <Button
                     title='Go Back'
                     onPress={this.onGoBackPress.bind(this)}
+                    additionalStyles={{backgroundColor: 'crimson', borderColor: 'crimson'}}
                 >
                     Go Back
                 </Button>
@@ -30,8 +34,8 @@ const styles = {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#80FF80'
+        backgroundColor: '#777'
     }
 };
 
-export default RightPage;
+export default RightPage2;

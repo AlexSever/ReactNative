@@ -2,20 +2,26 @@ import React, { Component } from 'react';
 import { Navigator, View } from 'react-native';
 import Firebase from 'firebase';
 
-import { NavBar, Spinner } from './components/common';
+import { Spinner } from './components/common';
+
+import NavBar from './components/navigation/NavBar';
 
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import Home from './components/userArea/Home';
-import RightPage from './components/userArea/RightPage';
+import RightPage1 from './components/userArea/RightPage1';
+import RightPage2 from './components/userArea/RightPage2';
+import RightPage3 from './components/userArea/RightPage3';
 import LeftPage from './components/userArea/LeftPage';
 
 const ROUTES = {
     Login: LoginForm,
     Register: RegisterForm,
     Home: Home,
-    rightPage: RightPage,
-    leftPage: LeftPage
+    RightPage1: RightPage1,
+    RightPage2: RightPage2,
+    RightPage3: RightPage3,
+    LeftPage: LeftPage
 };
 
 export default class App extends Component {
@@ -68,6 +74,10 @@ export default class App extends Component {
         return Navigator.SceneConfigs.FloatFromRight;
     }
 
+    renderTopNavBar() {
+        return NavBar;
+    }
+
     render() {
         if (this.state.loggedIn === null) {
             return <Spinner size='large' /> ;
@@ -79,7 +89,7 @@ export default class App extends Component {
                 initialRoute={this.renderInitialRoute()}
                 renderScene={this.renderScene}
                 configureScene={this.configureScene}
-                navigationBar={NavBar}
+                navigationBar={this.renderTopNavBar()}
             />
         );
     }
