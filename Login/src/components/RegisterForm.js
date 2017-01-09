@@ -116,7 +116,7 @@ class RegisterForm extends Component {
         //const { errorMessageStyle, goBackTextStyle} = styles;
         //<Header headerText="Authentication" />
         return (
-            <View>
+            <View style={styles.container}>
                 <Card>
                     <CardSection>
                         <Input
@@ -196,6 +196,10 @@ const styles = {
     goBackTextStyle: {
         fontSize: 18,
         textAlign: 'center'
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center'
     }
 };
 

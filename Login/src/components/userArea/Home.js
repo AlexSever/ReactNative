@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Navigator, Menu } from 'react-native';
+import { View, Text, Navigator, Menu, ScrollView, TextInput } from 'react-native';
 import SideMenu from 'react-native-side-menu';
 import Firebase from 'firebase';
 
@@ -53,6 +53,7 @@ class Home extends Component {
     // ========================
 
     onResponderGrant(evt) {
+        //console.log(evt);
         this.motionController.startMove(evt.nativeEvent);
     }
 
@@ -77,6 +78,8 @@ class Home extends Component {
                     style={styles.container}
                     onStartShouldSetResponder={evt => true}
                     onMoveShouldSetResponder={evt => true}
+                    onResponderTerminationRequest={evt => true}
+                    //onResponderReject={evt => true}
                     onResponderGrant={this.onResponderGrant.bind(this)}
                     onResponderMove={this.onResponderMove.bind(this)}
                     onResponderRelease={this.onResponderRelease.bind(this)}
@@ -118,3 +121,41 @@ const styles = {
 };
 
 export default Home;
+
+/*
+ <ScrollView >
+
+ <ScrollView horizontal={true}>
+ <Text style = {styles.profit_cash}>P1</Text><TextInput
+ style={{width:100, color: '#fff'}}
+ value={this.state.searchText}
+ //onChange={this.setSearchText.bind(this)}
+ placeholder="Search" />
+ <Text style = {styles.profit_cash}>P2 Hello world Bla bla</Text>
+ <TextInput
+ style={{width:100, color: '#fff'}}
+ value={this.state.searchText}
+ //onChange={this.setSearchText.bind(this)}
+ placeholder="Search" />
+ <Text style = {styles.profit_cash}>P2 Hello world Bla bla2222</Text>
+
+ </ScrollView>
+
+ <TextInput
+ style={{width:100, height: 300, color: '#f0f'}}
+ value={this.state.searchText}
+ //onChange={this.setSearchText.bind(this)}
+ placeholder="Search2" />
+ <Text style = {styles.profit_cash}>Hello World2</Text>
+ <TextInput
+ style={{width:100, height: 300, color: '#f0f'}}
+ value={this.state.searchText}
+ //onChange={this.setSearchText.bind(this)}
+ placeholder="Search3" />
+ <TextInput
+ style={{width:100, color: '#f0f'}}
+ value={this.state.searchText}
+ //onChange={this.setSearchText.bind(this)}
+ placeholder="Search4" />
+ </ScrollView>
+ */

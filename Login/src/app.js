@@ -54,7 +54,7 @@ export default class App extends Component {
     renderInitialRoute() {
         switch (this.state.loggedIn) {
             case true:
-                return {name: 'Home'};
+                return {name: 'Home', display: false};
             case false:
                 return {name: 'Login'};
         }
@@ -85,7 +85,7 @@ export default class App extends Component {
 
         return (
             <Navigator
-                sceneStyle={{marginTop:60}}
+                //sceneStyle={{marginTop:60}}
                 initialRoute={this.renderInitialRoute()}
                 renderScene={this.renderScene}
                 configureScene={this.configureScene}

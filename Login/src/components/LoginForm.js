@@ -44,7 +44,7 @@ class LoginForm extends Component {
             loading: false,
             errorMessage: ''
         });
-        this.props.navigator.immediatelyResetRouteStack([{name: 'Home'}]);
+        this.props.navigator.immediatelyResetRouteStack([{name: 'Home', display: false}]);
     }
 
     renderError() {
@@ -89,7 +89,7 @@ class LoginForm extends Component {
         //const { errorMessageStyle, registerTextStyle } = styles;
         //<Header headerText="Authentication" />
         return (
-            <View>
+            <View style={styles.container}>
                 <Card>
                     <CardSection>
                         <Input
@@ -142,6 +142,10 @@ const styles = {
     registerTextStyle: {
         fontSize: 18,
         textAlign: 'center'
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center'
     }
 };
 

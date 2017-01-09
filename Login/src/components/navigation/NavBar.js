@@ -1,6 +1,8 @@
 import React from 'react';
 import { Navigator, Text, TouchableHighlight } from 'react-native';
 
+import NavigationBarModified from './NavigationBarModified';
+
 const styles = {
     navBar: {
         flex: 1,
@@ -52,7 +54,7 @@ const NavBarRouteMapper = {
 };
 
 const NavBar = (
-    <Navigator.NavigationBar
+    <NavigationBarModified
         style={styles.navBar}
         routeMapper={NavBarRouteMapper}
     />
