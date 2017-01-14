@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigator, Text, TouchableOpacity } from 'react-native';
 
-import NavigationBarModified from './NavigationBarModified';
+import CustomNavBar from './CustomNavBar';
 
 const styles = {
     navBar: {
@@ -9,9 +9,9 @@ const styles = {
         backgroundColor: '#F8F8F8',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 60,
+        //height: 60,
         //paddingTop: Navigator.NavigationBar.Styles.General.TotalNavHeight,
-        paddingTop: 15,
+        //paddingTop: 15,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
@@ -38,7 +38,7 @@ const styles = {
 const NavBarRouteMapper = {
     LeftButton: (route, navigator, index, navState) =>
     {
-        if (route.name === 'Login' || route.name === 'Home') {
+        if (route.name === 'Page2' || route.name === 'Home') {
             return null;
         } else {
             return (
@@ -55,7 +55,7 @@ const NavBarRouteMapper = {
 };
 
 const NavBar = (
-    <NavigationBarModified
+    <CustomNavBar
         style={styles.navBar}
         routeMapper={NavBarRouteMapper}
     />

@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, Navigator, Menu, ScrollView, TextInput } from 'react-native';
+import { View,
+    Text,
+    Navigator,
+    Menu,
+    ScrollView,
+    TextInput,
+    PanResponder
+} from 'react-native';
+
 import SideMenu from 'react-native-side-menu';
 import Firebase from 'firebase';
 
@@ -15,8 +23,9 @@ class Home extends Component {
         super(props);
         this.state = {
             displayName: '',
-            email: ''
-        };
+            email: '',
+            coordinates: { x: 0, y: 0 }
+    };
         this.motionController = new motionController();
     }
 
@@ -46,6 +55,83 @@ class Home extends Component {
             displayName: displayName,
             email: email
         });
+
+        this._panResponder = PanResponder.create({
+            // Ask to be the responder:
+            //onStartShouldSetPanResponder: (evt, gestureState) => true,
+            //onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+            //onMoveShouldSetPanResponder: (evt, gestureState) => true,
+            onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+
+            onMoveShouldSetPanResponder:(evt, gestureState) => {
+                //this.getCoordinates(gestureState);
+            },
+
+            onPanResponderGrant: (evt, gestureState) => {
+                // The guesture has started. Show visual feedback so the user knows
+                // what is happening!
+
+                // gestureState.d{x,y} will be set to zero now
+            },
+            onPanResponderMove: (evt, gestureState) => {
+
+                this.getDirection(gestureState);
+                // The most recent move distance is gestureState.move{X,Y}
+
+                // The accumulated gesture distance since becoming responder is
+                // gestureState.d{x,y}
+            },
+            onPanResponderTerminationRequest: (evt, gestureState) => true,
+            onPanResponderRelease: (evt, gestureState) => {
+                if (this.state.coordinates.x < -20) {
+                    this.props.navigator.push({name: 'RightPage1'});
+                }
+                // The user has released all touches while this view is the
+                // responder. This typically means a gesture has succeeded
+            },
+            onPanResponderTerminate: (evt, gestureState) => {
+                // Another component has become the responder, so this gesture
+                // should be cancelled
+                return true;
+            },
+            onShouldBlockNativeResponder: (evt, gestureState) => {
+                // Returns whether this component should block native components from becoming the JS
+                // responder. Returns true by default. Is currently only supported on android.
+                return true;
+            },
+        });
+    }
+
+    getDirection(gestureState) {
+
+        const { moveX, moveY, dx, dy, vx, vy } = gestureState;
+
+        //const draggedLeft = dx < -20;
+        //const draggedRight = dx > 20;
+
+        let dragDirection = '';
+        // if Dragging Horizontally
+        if ((Math.abs(dx) > Math.abs(dy * 3)) &&
+            (Math.abs(vx) > Math.abs(vy * 3))) {
+
+            this.setState({
+                coordinates: { x: dx, y: dy }
+            });
+
+            //if (draggedLeft) {
+                //dragDirection = 'dragged left';
+                //console.log(dragDirection);
+                // this.setState({
+                //     direction: dragDirection
+                // });
+            //    return dragDirection = 'dragged left';
+            //}
+            // if (draggedRight) {
+            //     return dragDirection +=  'dragged right';
+            // }
+        }
+
+        //if (dragDirection) return dragDirection;
     }
 
     // ========================
@@ -53,7 +139,6 @@ class Home extends Component {
     // ========================
 
     onResponderGrant(evt) {
-        //console.log(evt);
         this.motionController.startMove(evt.nativeEvent);
     }
 
@@ -74,16 +159,32 @@ class Home extends Component {
 
         return (
             <SideMenu menu={Menu} >
-                <View
-                    style={styles.container}
-                    onStartShouldSetResponder={evt => true}
-                    onMoveShouldSetResponder={evt => true}
-                    onResponderTerminationRequest={evt => true}
-                    //onResponderReject={evt => true}
-                    onResponderGrant={this.onResponderGrant.bind(this)}
-                    onResponderMove={this.onResponderMove.bind(this)}
-                    onResponderRelease={this.onResponderRelease.bind(this)}
+                <View style={styles.container}>
+                    <ScrollView>
+                <ScrollView
+                    horizontal={true}
+                    style={{marginTop: 40}}
+                    //scrollEnabled={true}
                 >
+                    <Text style={{fontSize:20}}>Scroll me plz</Text>
+                    <Text style={{fontSize:20}}>If you like</Text>
+                    <Text style={{fontSize:20}}>Scrolling down</Text>
+                    <Text style={{fontSize:20}}>What's the best</Text>
+                    <Text style={{fontSize:20}}>Framework around?</Text>
+                    <Text style={{fontSize:20}}>React Native</Text>
+                </ScrollView>
+
+                <View
+
+                    //onStartShouldSetResponder={evt => true}
+                    //onMoveShouldSetResponder={evt => true}
+                    //onResponderTerminationRequest={evt => true}
+                    //onResponderGrant={this.onResponderGrant.bind(this)}
+                    //onResponderMove={this.onResponderMove.bind(this)}
+                    //onResponderRelease={this.onResponderRelease.bind(this)}
+                    {...this._panResponder.panHandlers}
+                >
+
                     <Text style={{ fontSize: 20}}>Welcome Home {this.state.displayName}!</Text>
                     <Text>Grab the left side of the screen to see Left Menu</Text>
                     <Text>Slide from Right to Left to go to the next page</Text>
@@ -106,6 +207,8 @@ class Home extends Component {
                         Go Left
                     </Button>
                 </View>
+                        </ScrollView>
+                    </View>
             </SideMenu>
         );
     }

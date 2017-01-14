@@ -8,6 +8,9 @@ import motionController from '../../gesture/motionController'
 class RightPage1 extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            hideNavigationBar: true
+        };
         this.motionController = new motionController();
     }
 
